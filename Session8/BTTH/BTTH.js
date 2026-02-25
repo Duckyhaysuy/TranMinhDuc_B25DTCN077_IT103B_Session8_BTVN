@@ -20,9 +20,9 @@ do{
     switch(choice){
         case 1: displaySquad(); break;
         case 2: searchPlayer(); break;
-        case 3:
-        case 4:
-        case 5:
+        case 3: filterByPosition(); break;
+        case 4: totalGoals(); break;
+        case 5: checkPerformance(); break;
         case 0:
             alert("Thoát!");
             break;
@@ -46,3 +46,54 @@ function searchPlayer(){
     }
 }
 
+function filterByPosition() {
+    let position = prompt("Nhập vị trí (FW / MF / DF / GK):").toUpperCase();
+
+    let filtered = squad.filter(player => player[2] === position);
+
+    if (filtered.length > 0) {
+        let result = `=== Cầu thủ vị trí ${position} ===\n`;
+
+        filtered.forEach(player => {
+            result += `${player[0]} - ${player[1]} bàn\n`;
+        });
+
+        alert(result);
+    } else {
+        alert("Không có cầu thủ ở vị trí này!");
+    }
+}
+
+function totalGoals() {
+    let total = squad.reduce((sum, player) => sum + player[1], 0);
+
+    alert(`Tổng số bàn thắng của đội: ${total}`);
+}
+
+function checkPerformance() {
+    let name = prompt("Nhập tên cầu thủ:");
+
+    let player = squad.find(p =>
+        p[0].toLowerCase().includes(name.toLowerCase())
+    );
+
+    if (!player) {
+        alert("Không tìm thấy cầu thủ!");
+        return;
+    }
+
+    let goals = player[1];
+    let performance;
+
+    if (goals >= 10) {
+        performance = "Xuất sắc";
+    } else if (goals >= 5) {
+        performance = "Tốt";
+    } else if (goals > 0) {
+        performance = "Trung bình";
+    } else {
+        performance = "Chưa ghi bàn";
+    }
+
+    alert(`${player[0]} ghi ${goals} bàn → Hiệu suất: ${performance}`);
+}
